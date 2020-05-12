@@ -121,28 +121,6 @@ print("TEST PATHS SHAPE" + str(testPaths.shape))
 print("TEST LABELS SHAPE" + str(testLabels.shape))
 print()
 
-nullTrainPaths = pd.isnull(trainPaths)
-nullTestPaths = pd.isnull(testPaths)
-nullTrainLabels = pd.isnull(trainLabels)
-nullTestLabels = pd.isnull(testLabels)
-
-if True in nullTrainPaths:
-  print("FOUND NULL IN TRAIN PATHS")
-
-if True in nullTestPaths:
-  print("FOUND NULL IN TEST PATHS")
-
-if True in nullTrainLabels:
-  print("FOUND NULL IN TRAIN LABELS")
-
-if True in nullTestLabels:
-  print("FOUND NULL IN TEST LABELS")
-
-# assert(pd.isnull(trainPaths) != True)
-# assert(pd.isnull(testPaths) != True)
-# assert(pd.isnull(trainLabels) != True)
-# assert(pd.isnull(testLabels) != True)
-
 
 """Create Model"""
 model = Sequential()
@@ -177,7 +155,7 @@ tdmodel = tf.keras.models.Model(inputs=input, outputs=preds)
 """Compile Model"""
 
 opt = tf.keras.optimizers.Adam(learning_rate=0.000001)
-tdmodel.compile(optimizer=opt, loss='MSE', metrics=['accuracy'])
+tdmodel.compile(optimizer=opt, loss=tf.keras.losses.CategoricalHinge(), metrics=['accuracy'])
 
 """Model.Fit"""
 training_generator = DataSequencer(trainPaths, trainLabels, batch_size, time_step, (INPUT_HEIGHT, INPUT_WIDTH, 1))
